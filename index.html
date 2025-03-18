@@ -3,89 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FREE YouTube Download 2024 (NO VIRUS!)</title>
+    <title>YouTube Video Downloader</title>
     <style>
         body {
-            background: #000;
-            color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
             text-align: center;
-            font-family: "Comic Sans MS", cursive;
-            animation: blinkText 1s infinite alternate;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        
-        @keyframes blinkText {
-            0% { color: red; }
-            100% { color: yellow; }
-        }
-
-        h1 {
-            font-size: 40px;
-            text-shadow: 3px 3px 5px black;
-        }
-
         input, select, button {
-            font-size: 20px;
+            width: 80%;
             padding: 10px;
-            margin: 10px;
-            border: 2px solid yellow;
-            background: black;
-            color: red;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-
-        #downloadBtn {
-            font-size: 25px;
-            padding: 15px;
-            font-weight: bold;
-            background: red;
-            border: 4px solid yellow;
+        button {
+            background-color: #28a745;
+            color: white;
             cursor: pointer;
-            animation: blinkButton 0.5s infinite alternate;
         }
-
-        @keyframes blinkButton {
-            0% { background: red; color: yellow; }
-            100% { background: yellow; color: red; }
+        button:hover {
+            background-color: #218838;
         }
-
         #status {
-            font-size: 30px;
-            font-weight: bold;
             margin-top: 20px;
-            animation: blinkText 0.8s infinite alternate;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h1>🔥 DOWNLOAD YOUTUBE VIDEOS FOR FREE 🔥</h1>
-    <h2>NO VIRUS, 100% LEGIT ✅</h2>
-
-    <input type="text" id="youtubeUrl" placeholder="Paste YouTube Link Here">
-    <br>
-    <label>Select Quality:</label>
-    <select id="quality">
-        <option value="1080p">1080p (Full HD)</option>
-        <option value="720p">720p (HD)</option>
-        <option value="480p">480p (Low Quality)</option>
-        <option value="144p">144p (Potato Quality)</option>
-    </select>
-    <br>
-    <button id="downloadBtn" onclick="startDownload()">DOWNLOAD NOW 🚀</button>
-
-    <p id="status"></p>
+    <div class="container">
+        <h1>YouTube Video Downloader</h1>
+        <input type="text" id="youtubeUrl" placeholder="Enter YouTube Video URL">
+        <select id="quality">
+            <option value="highest">Highest Quality</option>
+            <option value="lowest">Lowest Quality</option>
+        </select>
+        <button onclick="downloadVideo()">Download Video</button>
+        <p id="status"></p>
+    </div>
 
     <script>
-        function startDownload() {
-            let url = document.getElementById("youtubeUrl").value;
-            let quality = document.getElementById("quality").value;
-            if (!url.includes("youtube.com") && !url.includes("youtu.be")) {
-                document.getElementById("status").innerText = "❌ INVALID LINK! Please enter a real YouTube URL!";
+        async function downloadVideo() {
+            const url = document.getElementById('youtubeUrl').value;
+            const quality = document.getElementById('quality').value;
+            const status = document.getElementById('status');
+
+            if (!url) {
+                status.textContent = 'Please enter a YouTube video URL.';
+                status.style.color = 'red';
                 return;
             }
-            document.getElementById("status").innerText = "🔄 PROCESSING DOWNLOAD...";
 
-            setTimeout(() => {
-                document.getElementById("status").innerText = "✅ SUCCESS! Downloading in " + quality + "...";
-            }, 2000);
+            status.textContent = 'Processing your request...';
+            status.style.color = 'black';
+
+            try {
+                const response = await fetch('/download', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url, quality }),
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = downloadUrl;
+                    a.download = 'video.mp4';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(downloadUrl);
+                    status.textContent = 'Download started!';
+                    status.style.color = 'green';
+                } else {
+                    status.textContent = 'Failed to download video.';
+                    status.style.color = 'red';
+                }
+            } catch (error) {
+                status.textContent = 'An error occurred.';
+                status.style.color = 'red';
+            }
         }
     </script>
 </body>
