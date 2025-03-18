@@ -1,103 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Video Downloader</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-        .container {
             text-align: center;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
         }
         input, select, button {
-            width: 80%;
+            margin: 10px;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #status {
-            margin-top: 20px;
-            font-weight: bold;
+            font-size: 16px;
         }
     </style>
+    <script type="text/vbscript">
+        Function DownloadVideo()
+            Dim videoURL, quality, shell, command
+            videoURL = Document.getElementById("videoURL").value
+            quality = Document.getElementById("quality").value
+            If videoURL = "" Then
+                MsgBox "Please enter a YouTube video URL."
+                Exit Function
+            End If
+            Set shell = CreateObject("WScript.Shell")
+            command = "cscript //nologo ytdownloader.vbs """ & videoURL & """ """ & quality & """"
+            shell.Run command, 1, True
+            Set shell = Nothing
+        End Function
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>YouTube Video Downloader</h1>
-        <input type="text" id="youtubeUrl" placeholder="Enter YouTube Video URL">
+    <h1>YouTube Video Downloader</h1>
+    <form onsubmit="DownloadVideo(); return false;">
+        <input type="text" id="videoURL" placeholder="Enter YouTube Video URL" size="50"><br>
         <select id="quality">
-            <option value="highest">Highest Quality</option>
-            <option value="lowest">Lowest Quality</option>
-        </select>
-        <button onclick="downloadVideo()">Download Video</button>
-        <p id="status"></p>
-    </div>
-
-    <script>
-        async function downloadVideo() {
-            const url = document.getElementById('youtubeUrl').value;
-            const quality = document.getElementById('quality').value;
-            const status = document.getElementById('status');
-
-            if (!url) {
-                status.textContent = 'Please enter a YouTube video URL.';
-                status.style.color = 'red';
-                return;
-            }
-
-            status.textContent = 'Processing your request...';
-            status.style.color = 'black';
-
-            try {
-                const response = await fetch('/download', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ url, quality }),
-                });
-
-                if (response.ok) {
-                    const blob = await response.blob();
-                    const downloadUrl = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = downloadUrl;
-                    a.download = 'video.mp4';
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(downloadUrl);
-                    status.textContent = 'Download started!';
-                    status.style.color = 'green';
-                } else {
-                    status.textContent = 'Failed to download video.';
-                    status.style.color = 'red';
-                }
-            } catch (error) {
-                status.textContent = 'An error occurred.';
-                status.style.color = 'red';
-            }
-        }
-    </script>
+            <option value="1080p">1080p</option>
+            <option value="720p">720p</option>
+            <option value="480p">480p</option>
+            <option value="360p">360p</option>
+        </select><br>
+        <button type="submit">Download Video</button>
+    </form>
 </body>
 </html>
