@@ -1,46 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>YouTube Video Downloader</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Video Downloader</title>
+  <script>
+    function downloadVideo() {
+      var videoUrl = document.getElementById('videoUrl').value;
+      if (videoUrl) {
+        // Extract video ID from the URL
+        var videoId = videoUrl.split('v=')[1];
+        if (videoId) {
+          // Construct the download URL
+          var downloadUrl = 'https://rr4---sn-4g5edndr.googlevideo.com/videoplayback?expire=1742341488&ei=ELHZZ7f7LvDplu8PwJOU4Q8&ip=154.195.11.221&id=o-AL_4tsi-5gtNxy0ic-0c_wHo5SEgvrxx-C-fxwWbV3YF&itag=137&aitags=134%2C136%2C137%2C160%2C243&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AccgBcOyGJKNRqJVI_oU29CLriZQlujkoQcBhvmUO9v8MHaCxGyokYLJzvGclUcIfBzdxSiRtklEMNqF&spc=_S3wKg5DDEJMNoMn3_3viKAFySQRuqykAuDgK3N2wWbrCKI6KPqYCv18ODRGSPnZUpk&vprv=1&svpuc=1&mime=video%2Fmp4&ns=tlGd0GCK_X4G5iifXkt7ykQQ&rqh=1&gir=yes&clen=7623949&dur=14.400&lmt=1742316358550936&keepalive=yes&fexp=51355912,51411872&c=WEB&sefc=1&txp=6209224&n=o7hQ0nKs9U6jmw&sparams=expire%2Cei%2Cip%2Cid%2Caitags%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRQIgYveg900WNHW9XWl_EV_5k9rqEI5bAjCo4fvTVGXkUlQCIQCXEZoUH0kP0f-Rc-2h4k8OfFv82LtbNJc4WzTSE6_FKQ%3D%3D&pot=MnQZ8ZbPBcmPjhnJ907eOnUXmSMqQBUNZStWSzMr0GiZyR14YBdLEpAhx_CeJaaWmcsVdI7UsLxeNurez4WEfpsi-Au4zqokFTafl9Y_4VvLO2eLaNsfQSpeCEtZRRldqMqXSWClDpYvCMhqiby-yH32xPzJ4w%3D%3D&range=0-&title=Afraid%20of%20losing%20you%20[Liz%20and%20the%20Blue%20Bird%20AMV/Edit]&redirect_counter=1&cm2rm=sn-ab5yyy76&rrc=80&req_id=547a0bc1dcb3a6e9&cms_redirect=yes&met=1742319894,&mh=Lv&mip=196.39.34.28&mm=34&mn=sn-4g5edndr&ms=ltu&mt=1742319432&mv=m&mvi=4&pl=20&rms=ltu,au&lsparams=met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=AFVRHeAwRAIgUx7EpVL2CX6wlDPdzUKuAjH9WdumLeiNiFYB7pvq54oCIDZVVXxSRGtTmeUoczRv7tcSEIQb4saHNS76MuDemMrO';
+          // Redirect to the download URL
+          window.location.href = downloadUrl;
+        } else {
+          alert('Invalid YouTube URL');
         }
-        input, select, button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-    </style>
-    <script type="text/vbscript">
-        Function DownloadVideo()
-            Dim videoURL, quality, shell, command
-            videoURL = Document.getElementById("videoURL").value
-            quality = Document.getElementById("quality").value
-            If videoURL = "" Then
-                MsgBox "Please enter a YouTube video URL."
-                Exit Function
-            End If
-            Set shell = CreateObject("WScript.Shell")
-            command = "cscript //nologo ytdownloader.vbs """ & videoURL & """ """ & quality & """"
-            shell.Run command, 1, True
-            Set shell = Nothing
-        End Function
-    </script>
+      } else {
+        alert('Please enter a YouTube video URL');
+      }
+    }
+  </script>
 </head>
 <body>
-    <h1>YouTube Video Downloader</h1>
-    <form onsubmit="DownloadVideo(); return false;">
-        <input type="text" id="videoURL" placeholder="Enter YouTube Video URL" size="50"><br>
-        <select id="quality">
-            <option value="1080p">1080p</option>
-            <option value="720p">720p</option>
-            <option value="480p">480p</option>
-            <option value="360p">360p</option>
-        </select><br>
-        <button type="submit">Download Video</button>
-    </form>
+  <h1>YouTube Video Downloader</h1>
+  <p>Enter the URL of the YouTube video you want to download:</p>
+  <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=video_id">
+  <button onclick="downloadVideo()">Download Video</button>
 </body>
 </html>
